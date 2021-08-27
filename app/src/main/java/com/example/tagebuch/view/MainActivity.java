@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         //this.categoriaRoomDao.updateOne(categoria1);
 
     }
-
+    //comentario de prueba para github
 
 
     @Override
