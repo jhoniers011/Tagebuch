@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +39,8 @@ public class ReportarPensamientoFragment extends Fragment {
     private MainActivityController mainActivityController;
     private Button reportarbutton;
     private TextView titulo, descripcion;
+    private DividerItemDecoration dividerItemDecoration;
+    private LinearLayoutManager layoutManager;
 
 
 
@@ -79,9 +83,12 @@ public class ReportarPensamientoFragment extends Fragment {
 
             }
         });
-
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerListaCategorias = view.findViewById(R.id.CategoriasRecycler);
-        recyclerListaCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerListaCategorias.setLayoutManager(layoutManager);
+        dividerItemDecoration = new DividerItemDecoration(recyclerListaCategorias.getContext(),layoutManager.getOrientation());
+
+        recyclerListaCategorias.addItemDecoration(dividerItemDecoration);
 
 
         List<Categoria> listacategorias;
@@ -162,8 +169,25 @@ public class ReportarPensamientoFragment extends Fragment {
                 .show();
     }
 
-    public void pensamientoCorrecto(){
+    public void mostrarpensamientoCorrecto(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle("Correcto")
+                .setMessage("Pensamiento ingresado correctamente")
+                //.setCancelable(false)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //cargamos fragmento reportar pensamiento
+                        Fragment fragment = new BotonesUsuarioFragment();
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.ChangeFrameLayout,fragment).commit();
+                        FragmentTransaction transaction  = getParentFragmentManager().beginTransaction();
 
+                        transaction.replace(R.id.ChangeFrameLayout,fragment);
+                        transaction.commit();
+                    }
+                })
+                .show();
     }
+
 
 }

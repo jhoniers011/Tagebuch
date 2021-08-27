@@ -83,8 +83,24 @@ public class BotonesUsuarioFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //cargamos fragmento reportar pensamiento
-                Fragment fragment = new EditarPensamientoFragment();
+                //cargamos fragmento editar pensamiento
+                Fragment fragment = new ListarPensamientosEditarFragment();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.ChangeFrameLayout,fragment).commit();
+                FragmentTransaction transaction  = getParentFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.ChangeFrameLayout,fragment);
+                transaction.commit();
+
+            }
+        });
+
+        eliminar = view.findViewById(R.id.EliminarPensamientoPrincipalButton);
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //cargamos fragmento eliminar pensamiento
+                Fragment fragment = new EliminarPensamientoFragment();
                 //getSupportFragmentManager().beginTransaction().replace(R.id.ChangeFrameLayout,fragment).commit();
                 FragmentTransaction transaction  = getParentFragmentManager().beginTransaction();
 

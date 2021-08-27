@@ -1,70 +1,59 @@
 package com.example.tagebuch.view.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.example.tagebuch.Adapter.CategoriasAdapter;
 import com.example.tagebuch.Adapter.PensamientosAdapter;
 import com.example.tagebuch.R;
+import com.example.tagebuch.controller.MainActivityController;
+import com.example.tagebuch.model.pojo.Pensamiento;
+import com.example.tagebuch.view.MainActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditarPensamientoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class EditarPensamientoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private RecyclerView recyclerListaPensamientos;
     private PensamientosAdapter adapterPensamientos;
+    Pensamiento pensamiento;
+    private TextView fecha,categoria;
+    private EditText titulo;
+    private EditText descripcion;
+    private Button editar;
+    private MainActivityController mainActivityController;
 
     public EditarPensamientoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditarPensamientoFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static EditarPensamientoFragment newInstance(String param1, String param2) {
+    public static EditarPensamientoFragment newInstance() {
         EditarPensamientoFragment fragment = new EditarPensamientoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -74,18 +63,102 @@ public class EditarPensamientoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_editar_pensamiento, container, false);
 
-        recyclerListaPensamientos = view.findViewById(R.id.pensamientosRecycler);
-        recyclerListaPensamientos.setLayoutManager(new LinearLayoutManager(getContext()));
+        fecha = view.findViewById(R.id.FechaEditarPensamientoTextView);
+        categoria = view.findViewById(R.id.CategoriaEditarPensamientoTextView);
+        titulo = view.findViewById(R.id.TtituloEditarPensamientoEditText);
+        descripcion = view.findViewById(R.id.DescripcionEditarPensamientoEditText);
+        editar = view.findViewById(R.id.EditarPensamientoButton);
+        mainActivityController = new MainActivityController();
 
-        List<String> listapensamientos = new ArrayList<>();
+        Bundle args = getArguments();;
+        pensamiento = (Pensamiento) args.getSerializable("pensamiento");
 
-        for(int i = 0; i<10;i++){
-            listapensamientos.add("Hola"+i);
-        }
+        fecha.setText(pensamiento.getFecha());
+        categoria.setText(pensamiento.getCategoria().getCtitulo());
+        titulo.setText(pensamiento.getTitulo());
+        descripcion.setText(pensamiento.getDescripcion());
 
-        adapterPensamientos = new PensamientosAdapter(listapensamientos,getContext());
-        recyclerListaPensamientos.setAdapter(adapterPensamientos);
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comprobar();
+            }
+        });
+
+
 
         return view;
+    }
+
+    public void comprobar(){
+        Pensamiento pensamientoEditado = new Pensamiento();
+        pensamientoEditado.setFecha(pensamiento.getFecha());
+        pensamientoEditado.setCategoria(pensamiento.getCategoria());
+        pensamientoEditado.setId(pensamiento.getId());
+        pensamientoEditado.setTitulo(titulo.getText().toString());
+        pensamientoEditado.setDescripcion(descripcion.getText().toString());
+        mainActivityController.comprobarEditarPensamiento(this,pensamientoEditado);
+    }
+
+    public void  tituloVacio(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle("Error")
+                .setMessage("El titulo está vacío")
+                //.setCancelable(false)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public void limitetitulo(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle("Error")
+                .setMessage("El limite de caracteres es de 100")
+                //.setCancelable(false)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public void descripcionVacio(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle("Error")
+                .setMessage("La descripcion está vacia")
+                //.setCancelable(false)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public void EditarPensamientoCorrecto(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle("Correcto")
+                .setMessage("Pensamiento editado correctamente")
+                //.setCancelable(false)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //cargamos fragmento reportar pensamiento
+                        Fragment fragment = new BotonesUsuarioFragment();
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.ChangeFrameLayout,fragment).commit();
+                        FragmentTransaction transaction  = getParentFragmentManager().beginTransaction();
+
+                        transaction.replace(R.id.ChangeFrameLayout,fragment);
+                        transaction.commit();
+                    }
+                })
+                .show();
     }
 }

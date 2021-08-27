@@ -30,4 +30,7 @@ public interface CategoriaRoomDao {
     @Delete
     void deleteList(List<Categoria> categorias);
 
+    @Query("DELETE FROM categoria")
+    void borrartemporal();
+
 }

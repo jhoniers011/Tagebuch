@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/deshacer"
+        android:title="deshacer"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_undo_24"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/rehacer"
+        android:title="rehacer"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_redo_24"
+        app:showAsAction="always" />
+
+
+
+
+</menu>

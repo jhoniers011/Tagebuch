@@ -12,8 +12,12 @@ import com.example.tagebuch.model.dao.CategoriaRoomDao;
 import com.example.tagebuch.model.dao.PensamientoRoomDao;
 import com.example.tagebuch.model.pojo.Categoria;
 import com.example.tagebuch.model.pojo.Pensamiento;
+import com.example.tagebuch.view.fragments.EditarPensamientoFragment;
+import com.example.tagebuch.view.fragments.EliminarPensamientoFragment;
 import com.example.tagebuch.view.fragments.ReportarPensamientoFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivityController {
@@ -30,20 +34,22 @@ public class MainActivityController {
 
     public void comprobarPensamiento(ReportarPensamientoFragment fragment, String titulo, String descripcion,CategoriasAdapter adapter){
 
-        if (titulo == null || titulo.compareTo("") == 0){
+
+        if(comprobarTextoVacio(titulo)){
             fragment.tituloVacio();
             return;
         }
 
-        if (titulo.length() > 100){
+        if (comprobarLimiteTitulo(titulo)){
             fragment.limitetitulo();
             return;
         }
 
-        if (descripcion == null || descripcion.compareTo("") == 0){
+        if (comprobarTextoVacio(descripcion)){
             fragment.descripcionVacio();
             return;
         }
+
 
         if (adapter.getPosition() == -1){
             fragment.categoriaNoSeleccionada();
@@ -52,7 +58,50 @@ public class MainActivityController {
 
         //si esta correcto
         //metodo para mostrar que está correcto
+        guardarPensamiento(fragment.getActivity(),titulo,descripcion,adapter.getSelected());
+        fragment.mostrarpensamientoCorrecto();
     }
+
+    public Boolean  comprobarTextoVacio(String texto) {
+
+        if (texto == null || texto.compareTo("") == 0){
+            return true;
+        }
+        return false;
+
+    }
+
+    public Boolean  comprobarLimiteTitulo(String titulo) {
+
+        if (titulo.length() > 100){
+            return true;
+        }
+        return false;
+
+    }
+
+    public void comprobarEditarPensamiento(EditarPensamientoFragment fragment,Pensamiento pensamiento) {
+
+        if (comprobarTextoVacio(pensamiento.getTitulo())) {
+            fragment.tituloVacio();
+        }
+        if (comprobarLimiteTitulo(pensamiento.getTitulo())) {
+            fragment.limitetitulo();
+        }
+
+        if (comprobarTextoVacio(pensamiento.getDescripcion())) {
+
+            fragment.descripcionVacio();
+        }
+
+        //Si es correcto
+
+        actualizarPensamiento(fragment.getActivity(),pensamiento);
+        fragment.EditarPensamientoCorrecto();
+
+
+    }
+
 
 
     public void guardarPensamiento(Activity activity, String titulo, String descripcion, Categoria categoria){
@@ -61,9 +110,32 @@ public class MainActivityController {
         nuevopensamiento.setTitulo(titulo);
         nuevopensamiento.setDescripcion(descripcion);
         nuevopensamiento.setCategoria(categoria);
+        nuevopensamiento.setFecha(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) );
 
         this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
         this.pensamientoRoomDao.insertOne(nuevopensamiento);
 
+    }
+
+    public void actualizarPensamiento(Activity activity,Pensamiento pensamiento){
+        this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
+        //this.pensamientoRoomDao.updateOne(pensamiento);
+
+        this.pensamientoRoomDao.updateCustom(pensamiento.getTitulo(),pensamiento.getDescripcion(),pensamiento.getId());
+
+
+    }
+
+    public void eliminarPensamiento(EliminarPensamientoFragment fragment , Pensamiento pensamiento){
+        this.pensamientoRoomDao = LocalStorage.getLocalStorage(fragment.getActivity().getApplicationContext()).pensamientoRoomDao();
+        this.pensamientoRoomDao.deleteOne(pensamiento);
+
+        fragment.eliminarPensamientoCorrecto();
+
+    }
+
+    public List<Pensamiento> listarPensamiento(Activity activity){
+        this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
+        return this.pensamientoRoomDao.getAll();
     }
 }

@@ -1,12 +1,17 @@
 package com.example.tagebuch.model.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "pensamiento")
-public class Pensamiento {
+public class Pensamiento implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -57,4 +62,6 @@ public class Pensamiento {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+
+
 }

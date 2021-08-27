@@ -4,23 +4,29 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tagebuch.R;
+import com.example.tagebuch.model.pojo.Pensamiento;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PensamientosAdapter extends RecyclerView.Adapter<PensamientosAdapter.ViewHolder>{
+public class PensamientosAdapter extends RecyclerView.Adapter<PensamientosAdapter.ViewHolder>  {
 
-    private List<String> listapensamientos;
+    private List<Pensamiento> listapensamientos;
     private Context context;
+    private ItemClickListener clickListener;
 
-    public PensamientosAdapter(List<String> listapensamientos, Context context) {
+    public PensamientosAdapter(List<Pensamiento> listapensamientos, Context context,ItemClickListener clickListener) {
         this.listapensamientos = listapensamientos;
         this.context = context;
+        this.clickListener = clickListener;
+
     }
 
     @NonNull
@@ -34,7 +40,18 @@ public class PensamientosAdapter extends RecyclerView.Adapter<PensamientosAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tituloPensamiento.setText(listapensamientos.get(position));
+        holder.tituloPensamiento.setText(listapensamientos.get(position).getTitulo());
+        holder.fechaPensamiento.setText(listapensamientos.get(position).getFecha());
+        holder.descripcionPensamiento.setText(listapensamientos.get(position).getDescripcion());
+        holder.categoriaPensamiento.setText(listapensamientos.get(position).getCategoria().getCtitulo());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.OnItemClick(listapensamientos.get(position));
+
+            }
+        });
 
     }
 
@@ -56,5 +73,9 @@ public class PensamientosAdapter extends RecyclerView.Adapter<PensamientosAdapte
             categoriaPensamiento = itemView.findViewById(R.id.CategoriaPensamiento);
 
         }
+    }
+
+    public interface ItemClickListener{
+        public void OnItemClick(Pensamiento pensamiento);
     }
 }
