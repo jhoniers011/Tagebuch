@@ -20,6 +20,9 @@ public interface CategoriaRoomDao {
     @Insert
     void insertOne(Categoria categoria);
 
+    @Insert
+    void insertList(List<Categoria> categoria);
+
     @Update
     void updateOne(Categoria categoria);
 
@@ -27,8 +30,6 @@ public interface CategoriaRoomDao {
     @Update
     void updateList(List<Categoria> categorias);
 
-    @Delete
-    void deleteList(List<Categoria> categorias);
 
     @Query("DELETE FROM categoria")
     void borrartemporal();

@@ -13,42 +13,45 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ReportarPensamientoPrincipalButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="282dp"
-            android:layout_height="85dp"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="32dp"
             android:text="Reportar Pensamiento"
             app:icon="@drawable/ic_baseline_article_24"
-            app:layout_constraintBottom_toTopOf="@+id/EditarPensamientoPrincipalButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
-            app:layout_constraintVertical_bias="0.571" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/EditarPensamientoPrincipalButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="282dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="48dp"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
             android:text="Editar Pensamiento"
             app:icon="@drawable/ic_baseline_edit_24"
-            app:layout_constraintBottom_toTopOf="@+id/EliminarPensamientoPrincipalButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.423"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ReportarPensamientoPrincipalButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/EliminarPensamientoPrincipalButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="282dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="172dp"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
             android:text="Eliminar Pensamiento"
             app:icon="@drawable/ic_baseline_delete_sweep_24"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditarPensamientoPrincipalButton" />
 
         <ImageView
             android:id="@+id/imageView6"

@@ -34,7 +34,6 @@ public class MainActivityController {
 
     public void comprobarPensamiento(ReportarPensamientoFragment fragment, String titulo, String descripcion,CategoriasAdapter adapter){
 
-
         if(comprobarTextoVacio(titulo)){
             fragment.tituloVacio();
             return;
@@ -57,7 +56,6 @@ public class MainActivityController {
         }
 
         //si esta correcto
-        //metodo para mostrar que está correcto
         guardarPensamiento(fragment.getActivity(),titulo,descripcion,adapter.getSelected());
         fragment.mostrarpensamientoCorrecto();
     }
@@ -84,14 +82,17 @@ public class MainActivityController {
 
         if (comprobarTextoVacio(pensamiento.getTitulo())) {
             fragment.tituloVacio();
+            return;
         }
         if (comprobarLimiteTitulo(pensamiento.getTitulo())) {
             fragment.limitetitulo();
+            return;
         }
 
         if (comprobarTextoVacio(pensamiento.getDescripcion())) {
 
             fragment.descripcionVacio();
+            return;
         }
 
         //Si es correcto
@@ -138,4 +139,66 @@ public class MainActivityController {
         this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
         return this.pensamientoRoomDao.getAll();
     }
+
+    //Cargar las categorias si no están en la base de datos.
+    public void cargarCategorias(Context context){
+        this.categoriaRoomDao = LocalStorage.getLocalStorage(context).categoriaRoomDao();
+        List<Categoria> categorias = this.categoriaRoomDao.getAll();
+
+        if(categorias.size() == 0){
+
+        Categoria categoria1 = new Categoria();
+        categoria1.setCtitulo("Pensamiento deductivo ");
+        categoria1.setCdescripcion("parte de afirmaciones basadas en ideas abstractas y universales para aplicarlas a casos particulares.");
+        categoria1.setColor("#fa0000");
+        categoria1.setCid(7);
+
+        Categoria categoria2 = new Categoria();
+        categoria2.setCtitulo("Pensamiento inductivo");
+        categoria2.setCdescripcion("No parte de afirmaciones generales, sino que se basa en casos particulares y, a partir de ellos, genera ideas generales.");
+        categoria2.setColor("#1900fa");
+
+        Categoria categoria3 = new Categoria();
+        categoria3.setCtitulo("Pensamiento analítico");
+        categoria3.setCdescripcion("Crea piezas de información a partir de una unidad informacional amplia y llega a conclusiones viendo el modo en el que interactúan entre sí estos “fragmentos”.");
+        categoria3.setColor("#fae900");
+
+        Categoria categoria4 = new Categoria();
+        categoria4.setCtitulo("Pensamiento creativo");
+        categoria4.setCdescripcion("Se juega a crear soluciones originales y únicas ante problemas, mediante el cuestionamiento de las normas que en un principio parecen ser evidentes.");
+        categoria4.setColor("#00eefa");
+
+        Categoria categoria5 = new Categoria();
+        categoria5.setCtitulo("Pensamiento divergente");
+        categoria5.setCdescripcion("Se establece una división entre dos o más aspectos de una idea, y se explora las posibilidades de mantener esta “partición”.");
+        categoria5.setColor("#15fa00");
+
+        Categoria categoria6 = new Categoria();
+        categoria6.setCtitulo("Pensamiento convergente");
+        categoria6.setCdescripcion("Se da un proceso por el cual nos damos cuenta de que hay diferentes hechos o realidades que encajan entre sí a pesar de que en un principio parecía que no tenían nada en común.");
+        categoria6.setColor("#b300fa");
+
+        this.categoriaRoomDao.insertOne(categoria1);
+        this.categoriaRoomDao.insertOne(categoria2);
+        this.categoriaRoomDao.insertOne(categoria3);
+        this.categoriaRoomDao.insertOne(categoria4);
+        this.categoriaRoomDao.insertOne(categoria5);
+        this.categoriaRoomDao.insertOne(categoria6);
+
+        }
+        return;
+
+    }
+
+    public void crearMemento(){
+
+        //return new Memento()
+
+    }
+
+    public void restaurarMemento(){
+        //deshacer memento
+    }
+
+
 }

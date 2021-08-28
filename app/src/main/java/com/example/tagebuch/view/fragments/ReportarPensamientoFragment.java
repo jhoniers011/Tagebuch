@@ -25,11 +25,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReportarPensamientoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ReportarPensamientoFragment extends Fragment {
 
 
@@ -49,20 +44,10 @@ public class ReportarPensamientoFragment extends Fragment {
     }
 
 
-    public static ReportarPensamientoFragment newInstance(String param1, String param2) {
-        ReportarPensamientoFragment fragment = new ReportarPensamientoFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
     }
 
     @Override
@@ -116,7 +101,7 @@ public class ReportarPensamientoFragment extends Fragment {
     public void  tituloVacio(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("El titulo está vacío")
+                .setMessage("No puede ingresar un título vacío")
                 //.setCancelable(false)
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -130,7 +115,7 @@ public class ReportarPensamientoFragment extends Fragment {
     public void limitetitulo(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("El limite de caracteres es de 100")
+                .setMessage("El título debe contener máximo 100 caracteres, por favor verifique y realice el respectivo cambio.")
                 //.setCancelable(false)
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -144,7 +129,7 @@ public class ReportarPensamientoFragment extends Fragment {
     public void descripcionVacio(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("La descripcion está vacia")
+                .setMessage("No puede ingresar una descripción vacía")
                 //.setCancelable(false)
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -172,7 +157,7 @@ public class ReportarPensamientoFragment extends Fragment {
     public void mostrarpensamientoCorrecto(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Correcto")
-                .setMessage("Pensamiento ingresado correctamente")
+                .setMessage("Pensamiento reportado correctamente")
                 //.setCancelable(false)
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override

@@ -43,6 +43,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         holder.descripcionCategoria.setText(listacategorias.get(position).getCdescripcion());
         //holder.categoriaCardView.setCardBackgroundColor(Color.parseColor(listacategorias.get(position).getColor()));
         holder.categoriaCardView.setCardBackgroundColor(Color.parseColor(listacategorias.get(position).getColor()));
+        holder.categoriaCardView.getBackground().setAlpha(51);
 
 
 

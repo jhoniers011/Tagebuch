@@ -29,8 +29,6 @@ import java.util.List;
 public class EditarPensamientoFragment extends Fragment {
 
 
-    private RecyclerView recyclerListaPensamientos;
-    private PensamientosAdapter adapterPensamientos;
     Pensamiento pensamiento;
     private TextView fecha,categoria;
     private EditText titulo;
@@ -42,13 +40,6 @@ public class EditarPensamientoFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public static EditarPensamientoFragment newInstance() {
-        EditarPensamientoFragment fragment = new EditarPensamientoFragment();
-
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,15 +72,17 @@ public class EditarPensamientoFragment extends Fragment {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 comprobar();
+
             }
         });
-
 
 
         return view;
     }
 
+    //Comprobar que el pensamiento editado está correcto.
     public void comprobar(){
         Pensamiento pensamientoEditado = new Pensamiento();
         pensamientoEditado.setFecha(pensamiento.getFecha());
@@ -103,8 +96,7 @@ public class EditarPensamientoFragment extends Fragment {
     public void  tituloVacio(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("El titulo está vacío")
-                //.setCancelable(false)
+                .setMessage("No puede ingresar un título vacío")
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -117,8 +109,7 @@ public class EditarPensamientoFragment extends Fragment {
     public void limitetitulo(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("El limite de caracteres es de 100")
-                //.setCancelable(false)
+                .setMessage("El título debe contener máximo 100 caracteres, por favor verifique y realice el respectivo cambio.")
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -131,8 +122,7 @@ public class EditarPensamientoFragment extends Fragment {
     public void descripcionVacio(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Error")
-                .setMessage("La descripcion está vacia")
-                //.setCancelable(false)
+                .setMessage("No puede ingresar una descripción vacía")
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -146,7 +136,6 @@ public class EditarPensamientoFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle("Correcto")
                 .setMessage("Pensamiento editado correctamente")
-                //.setCancelable(false)
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
