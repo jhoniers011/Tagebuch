@@ -17,8 +17,13 @@ public interface PensamientoRoomDao {
     @Query("SELECT * FROM pensamiento")
     List<Pensamiento> getAll();
 
+    @Query("SELECT * FROM pensamiento  WHERE id = (SELECT MAX(ID) FROM pensamiento)")
+    Pensamiento ListOne();
+
+
     @Insert
     void insertOne(Pensamiento pensamiento);
+
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateOne(Pensamiento pensamiento);

@@ -24,6 +24,8 @@ public class MainActivityController {
 
     private CategoriaRoomDao categoriaRoomDao;
     private PensamientoRoomDao pensamientoRoomDao;
+    private static PilaTamanoFijo pilaDeshacer = new PilaTamanoFijo(10);
+    private static PilaTamanoFijo pilaRehacer = new PilaTamanoFijo(10);
 
     public List<Categoria> obtenerCategorias(Activity activity){
 
@@ -78,18 +80,18 @@ public class MainActivityController {
 
     }
 
-    public void comprobarEditarPensamiento(EditarPensamientoFragment fragment,Pensamiento pensamiento) {
+    public void comprobarEditarPensamiento(EditarPensamientoFragment fragment,Pensamiento pensamientoeditado,Pensamiento pensamientosineditar) {
 
-        if (comprobarTextoVacio(pensamiento.getTitulo())) {
+        if (comprobarTextoVacio(pensamientoeditado.getTitulo())) {
             fragment.tituloVacio();
             return;
         }
-        if (comprobarLimiteTitulo(pensamiento.getTitulo())) {
+        if (comprobarLimiteTitulo(pensamientoeditado.getTitulo())) {
             fragment.limitetitulo();
             return;
         }
 
-        if (comprobarTextoVacio(pensamiento.getDescripcion())) {
+        if (comprobarTextoVacio(pensamientoeditado.getDescripcion())) {
 
             fragment.descripcionVacio();
             return;
@@ -97,7 +99,7 @@ public class MainActivityController {
 
         //Si es correcto
 
-        actualizarPensamiento(fragment.getActivity(),pensamiento);
+        actualizarPensamiento(fragment.getActivity(),pensamientoeditado,pensamientosineditar);
         fragment.EditarPensamientoCorrecto();
 
 
@@ -113,23 +115,42 @@ public class MainActivityController {
         nuevopensamiento.setCategoria(categoria);
         nuevopensamiento.setFecha(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) );
 
-        this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
-        this.pensamientoRoomDao.insertOne(nuevopensamiento);
+        InsertarCommand insertar = new InsertarCommand(activity.getApplicationContext(),nuevopensamiento);
+        insertar.execute();
+
+
+        //this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
+        //Pensamiento pensamiento = this.pensamientoRoomDao.ListOne();
+
+
+
+        pilaDeshacer.push(insertar);
 
     }
 
-    public void actualizarPensamiento(Activity activity,Pensamiento pensamiento){
-        this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
+    public void actualizarPensamiento(Activity activity,Pensamiento pensamientoeditado,Pensamiento pensamientoSinEditar){
+
+        EditarCommand editar = new EditarCommand(activity.getApplicationContext(),pensamientoeditado,pensamientoSinEditar);
+        editar.execute();
+        //this.pensamientoRoomDao = LocalStorage.getLocalStorage(activity.getApplicationContext()).pensamientoRoomDao();
         //this.pensamientoRoomDao.updateOne(pensamiento);
 
-        this.pensamientoRoomDao.updateCustom(pensamiento.getTitulo(),pensamiento.getDescripcion(),pensamiento.getId());
+        //this.pensamientoRoomDao.updateCustom(pensamiento.getTitulo(),pensamiento.getDescripcion(),pensamiento.getId());
+        pilaDeshacer.push(editar);
 
 
     }
 
     public void eliminarPensamiento(EliminarPensamientoFragment fragment , Pensamiento pensamiento){
+        EliminarCommand eliminar = new EliminarCommand(fragment.getContext(),pensamiento);
+        eliminar.execute();
+
         this.pensamientoRoomDao = LocalStorage.getLocalStorage(fragment.getActivity().getApplicationContext()).pensamientoRoomDao();
         this.pensamientoRoomDao.deleteOne(pensamiento);
+
+        EliminarCommand insertar = new EliminarCommand(fragment.getContext(),pensamiento);
+        insertar.execute();
+        pilaDeshacer.push(insertar);
 
         fragment.eliminarPensamientoCorrecto();
 
@@ -190,14 +211,38 @@ public class MainActivityController {
 
     }
 
-    public void crearMemento(){
+    public void deshacer(){
 
-        //return new Memento()
+        Command command = (Command) pilaDeshacer.pop();
+        pilaRehacer.push(command);
+        command.unexecute();
+        return;
+    }
+
+    public void rehacer(){
+
+        Command command = (Command) pilaRehacer.pop();
+        pilaDeshacer.push(command);
+        command.execute();
+        return;
+
 
     }
 
-    public void restaurarMemento(){
-        //deshacer memento
+    public boolean comprobarPilaVaciaDeshacer(){
+        if (pilaDeshacer.size() <= 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public boolean comprobarPilaVaciaRehacer(){
+        if (pilaRehacer.size() <= 0){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 

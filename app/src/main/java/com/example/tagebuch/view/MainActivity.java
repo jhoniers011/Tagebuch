@@ -1,11 +1,16 @@
 package com.example.tagebuch.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.tagebuch.R;
 import com.example.tagebuch.controller.Command;
@@ -52,21 +57,55 @@ public class MainActivity extends AppCompatActivity {
         //return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.deshacer:
+                if (!mainActivityController.comprobarPilaVaciaDeshacer()){
+
+                    Toast.makeText(this,"No hay nada para deshacer",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    deshacer();
+                    Toast.makeText(this,"Deshacer",Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+
+            case R.id.rehacer:
+
+                if (!mainActivityController.comprobarPilaVaciaRehacer()){
+
+                    Toast.makeText(this,"No hay nada para rehacer",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    rehacer();
+                    Toast.makeText(this,"rehacer",Toast.LENGTH_SHORT).show();
+                }
+
+
+                break;
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public void deshacer(){
 
-        // (new UndoCommand(this,controlador,)
+        mainActivityController.deshacer();
 
     }
 
     public void rehacer(){
 
-        // ejecutarComando(new redoCommand(this,controador)
+        mainActivityController.rehacer();
 
     }
 
-    public void ejecutarComando(Command command){
-        command.execute();
-    }
 
 
 }

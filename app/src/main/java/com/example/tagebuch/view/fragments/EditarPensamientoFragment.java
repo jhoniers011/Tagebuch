@@ -73,7 +73,7 @@ public class EditarPensamientoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                comprobar();
+                comprobar(pensamiento);
 
             }
         });
@@ -83,14 +83,14 @@ public class EditarPensamientoFragment extends Fragment {
     }
 
     //Comprobar que el pensamiento editado está correcto.
-    public void comprobar(){
+    public void comprobar(Pensamiento pensamientosineditar){
         Pensamiento pensamientoEditado = new Pensamiento();
         pensamientoEditado.setFecha(pensamiento.getFecha());
         pensamientoEditado.setCategoria(pensamiento.getCategoria());
         pensamientoEditado.setId(pensamiento.getId());
         pensamientoEditado.setTitulo(titulo.getText().toString());
         pensamientoEditado.setDescripcion(descripcion.getText().toString());
-        mainActivityController.comprobarEditarPensamiento(this,pensamientoEditado);
+        mainActivityController.comprobarEditarPensamiento(this,pensamientoEditado,pensamientosineditar);
     }
 
     public void  tituloVacio(){

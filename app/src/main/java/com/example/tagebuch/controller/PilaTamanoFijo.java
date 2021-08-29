@@ -2,7 +2,7 @@ package com.example.tagebuch.controller;
 
 import java.util.Stack;
 
-public class PilaTamanoFijo<Categoria> extends Stack<Categoria> {
+public class PilaTamanoFijo<Command> extends Stack<Command> {
 
     private int tamano;
 
@@ -13,10 +13,10 @@ public class PilaTamanoFijo<Categoria> extends Stack<Categoria> {
     }
 
     @Override
-    public Categoria push(Categoria categoria){
+    public Command push(Command pensamiento){
         while (this.size() >= tamano) {
             this.remove(0);
         }
-        return super.push(categoria);
+        return super.push(pensamiento);
     }
 }
